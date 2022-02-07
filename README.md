@@ -35,7 +35,7 @@ And much more !
 
 ## Documentation
 
-Check the documentation to get you started!
+Check the [documentation](https://bbj-plugins.github.io/BBjToast) to get you started!
 
 ## Contributing
 
