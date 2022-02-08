@@ -1,0 +1,27 @@
+{
+  "name": "BBjToast",
+  "version": "0.0.1",
+  "private": false,
+  "description": "BBj notifications made easy 🚀 !",
+  "author": "BASIS Europe Distribution GmbH",
+  "license": "MIT",
+  "homepage": "https://bbj-plugins.github.io/BBjToast",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BBj-Plugins/BBjToast"
+  },
+  "keywords": [
+    "bbj",
+    "dwc",
+    "toast",
+    "notification"
+  ],
+  "bugs": {
+    "url": "https://github.com/BBj-Plugins/BBjToast/issues"
+  },
+  "bbj_dependency": "21.14",
+  "client": [
+    "DWC"
+  ],
+  "plugin_dependencies": []
+}
