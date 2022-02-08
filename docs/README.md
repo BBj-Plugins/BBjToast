@@ -16,6 +16,11 @@ They can be used to provide feedback about an operation or to display a system m
 
 And much more !
 
+## Installation
+
+* Clone the [project](https://github.com/BBj-Plugins/BBjToast) locally , then add BBjToast to your BBj paths
+* Or [Use the plugins manager](https://www.bbj-plugins.com/en/get-started)
+
 ## The gist
 
 ```BBj
@@ -38,6 +43,7 @@ return
 eoj:
 release
 ```
+
 
 ## Placements
 

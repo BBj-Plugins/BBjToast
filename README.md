@@ -19,7 +19,7 @@ BBjToast is a custom BBj Widget for the DWC which allows you to add notification
 
 ## Installation
 
-* Clone the project locally , then add BBjToast to your paths
+* Clone the [project](https://github.com/BBj-Plugins/BBjToast) locally , then add BBjToast to your BBj paths
 * Or [Use the plugins manager](https://www.bbj-plugins.com/en/get-started)
 
 ## Features
