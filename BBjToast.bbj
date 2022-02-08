@@ -256,7 +256,7 @@ class public BBjToast
 :    "  document.body.appendChild(toast);" +
 :    " }" +
 :    " if(toast.opened) await toast.close();" +
-:    " toast.classList.add(...'" + str(#getCssClass()) + "'.split(',').map(x => x.trim()));" +
+:    " try{toast.classList.add(...'" + str(#getCssClass()) + "'.split(',').map(x => x.trim()));}catch(e){}" +
 :    " toast.setAttribute('placement','" + str(#getPlacementAttribute()) + "');"+
 :    " toast.setAttribute('theme','" + str(#getThemeAttribute()) + "');"+
 :    " toast.message='" + str(#getMessage()) + "';"+
