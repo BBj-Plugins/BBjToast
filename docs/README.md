@@ -297,7 +297,7 @@ open! = wnd!.addButton(205,10,10,110,30,"Update")
 open!.setCallback(open!.ON_BUTTON_PUSH,"open")
 
 toast! = new BBjToast(wnd!)
-toast!.getButtons().put("Lated", BBjToast.ACTION_CLOSE)
+toast!.getButtons().put("Later", BBjToast.ACTION_CLOSE)
 toast!.getButtons().put("Update Now", "update")
 toast!.setCallback("update", "onUpdate")
 
@@ -522,7 +522,7 @@ open! = wnd!.addButton(205,10,10,110,30,"Update")
 open!.setCallback(open!.ON_BUTTON_PUSH,"open")
 
 toast! = new BBjToast(wnd!,"toast-custom-theme")
-toast!.getButtons().put("Lated", BBjToast.ACTION_CLOSE)
+toast!.getButtons().put("Later", BBjToast.ACTION_CLOSE)
 toast!.getButtons().put("Update Now", BBjToast.ACTION_CLOSE)
 
 process_events
