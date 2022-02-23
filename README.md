@@ -45,4 +45,4 @@ ways you can contribute:
 * Reporting issues (please read [issue guidelines](https://github.com/necolas/issue-guidelines))
 * Suggesting new features
 * Writing or refactoring code
-* Fixing [issues](https://github.com/hyyan/woo-poly-integration/issues)
+* Fixing [issues](https://github.com/BBj-Plugins/BBjToast/issues)
