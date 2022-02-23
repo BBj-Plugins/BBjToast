@@ -142,7 +142,7 @@ class public BBjToast
   rem  * @param cssClass! A css class selector to add to the toast client-side component 
   rem  */
   method public BBjToast(BBjWindow wnd!, BBjNumber id!, BBjString cssClass!)
-    #Canvas! = wnd!.addChildWindow(id!, 0, 0, 0, 0, "", $00008000$, BBjAPI().getSysGui().getAvailableContext())
+    #Canvas! = wnd!.addChildWindow(id!, 0, 0, 0, 0, "", $00008010$, BBjAPI().getSysGui().getAvailableContext())
     #CssClass! = cssClass!
     #HTMLView! = #Canvas!.addHtmlView(101, 0, 0, 0, 0, "", $0000$)
     #HTMLView!.setOpaque(0)
