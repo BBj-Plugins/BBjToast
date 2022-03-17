@@ -1,5 +1,20 @@
 # BBjToast Widget
 
+<p>
+  <a href="http://www.basis.com/downloads">
+    <img src="https://img.shields.io/badge/BBj-v21.14-blue" alt="BBj v21.14" />
+  </a>
+  <a href="https://github.com/BBj-Plugins/BBjToast/blob/master/README.md">
+    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="BBjToast is released under the MIT license." />
+  </a>
+  <a href="https://github.com/necolas/issue-guidelines/blob/master/CONTRIBUTING.md#pull-requests">
+    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs welcome!" />
+  </a>
+   <a href="https://basishub.github.io/basis-next/#/dwc/bbj-toast">
+    <img src="https://img.shields.io/badge/Component-bbj--toast-%23006aff" alt="Tag Name">
+  </a>
+</p>
+
 BBjToast is a custom BBj Widget for the DWC which allows you to add notifications to your app with ease.
 
 Toast notifications are commonly used in modern applications.

@@ -10,8 +10,8 @@
   <a href="https://github.com/necolas/issue-guidelines/blob/master/CONTRIBUTING.md#pull-requests">
     <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs welcome!" />
   </a>
-   <a href="https://open.vscode.dev/BBj-Plugins/BBjToast">
-    <img src="https://open.vscode.dev/badges/open-in-vscode.svg" alt="Open in Visual Studio Code" />
+   <a href="https://basishub.github.io/basis-next/#/dwc/bbj-toast">
+    <img src="https://img.shields.io/badge/Component-bbj--toast-%23006aff" alt="Tag Name">
   </a>
 </p>
 

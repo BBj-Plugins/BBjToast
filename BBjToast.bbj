@@ -131,25 +131,26 @@ class public BBjToast
   field public HashMap Buttons! = new HashMap()
   field protected BBjChildWindow Canvas!
   field protected BBjHtmlView HTMLView!
-  field protected BBjString Id! = java.util.UUID.randomUUID().toString()
-  field protected BBjNumber EventProcessingStarted! = 0
+  field protected BBjString UUID! = java.util.UUID.randomUUID().toString()
   field protected BBjString CssClass! = ""
   rem /**
   rem  * Construct new BBjToast for the given BBjTopLevelWindow instance
   rem  *
   rem  * @param wnd! The window instance
   rem  * @param id! The id of the created child window
-  rem  * @param cssClass! A css class selector to add to the toast client-side component 
   rem  */
   method public BBjToast(BBjWindow wnd!, BBjNumber id!, BBjString cssClass!)
-    #Canvas! = wnd!.addChildWindow(id!, 0, 0, 0, 0, "", $00008010$, BBjAPI().getSysGui().getAvailableContext())
     #CssClass! = cssClass!
+    #Canvas! = wnd!.addChildWindow(id!, 0, 0, 0, 0, "", $00008010$, BBjAPI().getSysGui().getAvailableContext())
+    rem force components to load
+    #Canvas!.addButton(32765,0,0,0,0,"",$0010$)
     #HTMLView! = #Canvas!.addHtmlView(101, 0, 0, 0, 0, "", $0000$)
     #HTMLView!.setOpaque(0)
     #HTMLView!.setNoEdge(1)
     #HTMLView!.setTabTraversable(0)
     #HTMLView!.setFocusable(0)
-    #HTMLView!.setAttribute("data-htmlview-for-toast", #Id!)
+    #HTMLView!.setAttribute("data-hv", #UUID!)
+    #HTMLView!.setCallback(BBjAPI.ON_NATIVE_JAVASCRIPT, #this!, "handleJavascriptEvents")
   methodend
   rem /**
   rem  * Construct new BBjToast for the given BBjTopLevelWindow instance
@@ -159,14 +160,14 @@ class public BBjToast
   rem  */
   method public BBjToast(BBjWindow wnd!, BBjNumber id!)
     #this!(wnd!, id!, "")
-  methodend    
+  methodend
   rem /**
   rem  * Construct new BBjToast for the given BBjTopLevelWindow instance
   rem  *
   rem  * @param wnd! The window instance
-  rem  * @param cssClass! A css class selector to add to the toast client-side component 
+  rem  * @param cssClass! A css class selector to add to the toast client-side component
   rem  */
-  method public BBjToast(BBjWindow wnd!, BBjString cssClass!)    
+  method public BBjToast(BBjWindow wnd!, BBjString cssClass!)
     #this!(wnd!, wnd!.getAvailableControlID(), cssClass!)
   methodend
   rem /**
@@ -176,14 +177,22 @@ class public BBjToast
   rem  */
   method public BBjToast(BBjWindow wnd!)
     #this!(wnd!, wnd!.getAvailableControlID(), "")
-  methodend    
+  methodend
   rem /**
   rem  * Get the unique auto generated id of the toast.
   rem  *
   rem  * @return BBjString
   rem  */
-  method public BBjString getId()
-    methodret #Id!
+  method public BBjString getUUID()
+    methodret #UUID!
+  methodend
+  rem /**
+  rem  * Get the canvas's id
+  rem  *
+  rem  * @return BBjNumber
+  rem  */
+  method public BBjNumber getID()
+    methodret #getCanvas().getID()
   methodend
   rem /**
   rem  * Get the css class of the component
@@ -192,7 +201,7 @@ class public BBjToast
   rem  */
   method public BBjString getCssClass()
     methodret #CssClass!
-  methodend    
+  methodend       
   rem /**
   rem  * Open the toast.
   rem  *
@@ -202,7 +211,7 @@ class public BBjToast
   rem  * @return BBjToast
   rem */
   method public BBjToast open(BBjString message!, BBjNumber duration!)
-    id! = str(#getId())
+    id! = str(#getUUID())
     buttons! = ""
     it! = #getButtons().entrySet().iterator()
     while it!.hasNext()
@@ -227,22 +236,22 @@ class public BBjToast
 :    "(async () => {" +
 :    " await customElements.whenDefined('bbj-toast');" +
 :    " await customElements.whenDefined('bbj-icon');" +
-:    " const container = document.querySelector('[data-htmlview-for-toast=""" + id! + """]');" +
-:    " let toast = document.querySelector('[data-toast-for=""" + id! + """]');" +
+:    " const container = document.querySelector('[data-hv=""" + id! + """]');" +
+:    " let toast = document.querySelector('[data-toast=""" + id! + """]');" +
 :    " if(!toast){" +
 :    "  toast = document.createElement('bbj-toast');" +
 :    "  toast.addEventListener('bbj-opened', ev => {"+
-:    "     if(!container.basisDispatchCustomEvent) return;" +
+:    "     if(!container || !container.basisDispatchCustomEvent) return;" +
 :    "     if(!ev.target.isSameNode(toast)) return;" +
 :    "     container.basisDispatchCustomEvent(container, {type:'bbj-opened', detail: ''});" +
 :    "  });"+
 :    "  toast.addEventListener('bbj-closed', ev => {"+
-:    "     if(!container.basisDispatchCustomEvent) return;" +
+:    "     if(!container ||  !container.basisDispatchCustomEvent) return;" +
 :    "     if(!ev.target.isSameNode(toast)) return;" +
 :    "     container.basisDispatchCustomEvent(container, {type:'bbj-closed', detail: ''});" +
 :    "  });"+
 :    "  toast.addEventListener('click', ev => {"+
-:    "     if(!container.basisDispatchCustomEvent) return;" +
+:    "     if(!container || !container.basisDispatchCustomEvent) return;" +
 :    "     const target = ev.target.closest('[data-action]');" +
 :    "     if(!target) return;" +
 :    "     const action = target.getAttribute('data-action');" +
@@ -252,7 +261,7 @@ class public BBjToast
 :    "     }" +
 :    "     container.basisDispatchCustomEvent(container, {type:action, detail: ''});" +
 :    "  });"+
-:    "  toast.setAttribute('data-toast-for','" + Id! + "');" +
+:    "  toast.setAttribute('data-toast','" + #getUUID() + "');" +
 :    "  document.body.appendChild(toast);" +
 :    " }" +
 :    " if(toast.opened) await toast.close();" +
@@ -264,7 +273,7 @@ class public BBjToast
 :    " toast.innerHTML='" + str(buttons!) + "';"+
 :    " await toast.open()"+
 :    "})()"
-    #getHTMLView().executeScript(script!)
+    #getHTMLView().executeAsyncScript(script!)
     methodret #this!
   methodend
   rem /**
@@ -299,11 +308,38 @@ class public BBjToast
   method public BBjToast close()
     script! = "" +
 :    "(() => {" +
-:    " const toast = document.querySelector('[data-toast-for=""" + #getId() + """]');" +
+:    " const toast = document.querySelector('[data-toast=""" + #getUUID() + """]');" +
 :    " if(toast) toast.opened = false;" +
 :    "})()"
-    #getHTMLView().executeScript(script!)
+    #getHTMLView().executeAsyncScript(script!)
     methodret #this!
+  methodend
+  rem /**
+  rem  * Set a widget attribute
+  rem  *
+  rem  * @param key! The attribute's name
+  rem  * @param value! The attribute's value
+  rem  */
+  method public void setAttribute(BBjString key!, BBjString value!)
+    script! = "" +
+:    "(() => {" +
+:    " const toast = document.querySelector('[data-toast=""" + #getUUID() + """]');" +
+:    " toast.setAttribute('" + str(key!) + "','" + str(value!) + "');" +
+:    "})()"
+    #getHTMLView().executeAsyncScript(script!)
+  methodend
+  rem /**
+  rem  * Get a widget attribute
+  rem  *
+  rem  * @param key! The attribute's name
+  rem  */
+  method public BBjString getAttribute(BBjString key!)
+    script! = "" +
+:    "(() => {" +
+:    " const toast = document.querySelector('[data-toast=""" + #getUUID() + """]');" +
+:    " return toast.getAttribute('" + str(key!) + "');" +
+:    "})()"
+    methodret str(#getHTMLView().executeScript(script!))
   methodend
   rem /**
   rem  * Set a toast event listener
@@ -312,7 +348,6 @@ class public BBjToast
   rem  * @param callback! The event callback
   rem  */
   method public void setCallback(BBjString event!, String callback!)
-    #startEventsProcessing()
     BBjAPI().setCustomEventCallback(str(#this!) + str(event!), callback!)
   methodend
   rem /**
@@ -323,7 +358,6 @@ class public BBjToast
   rem  * @param callback! The event method
   rem  */
   method public void setCallback(BBjString event!, CustomObject instance!, String method!)
-    #startEventsProcessing()
     BBjAPI().setCustomEventCallback(str(#this!) + str(event!), instance!, method!)
   methodend
   rem /**
@@ -404,14 +438,6 @@ class public BBjToast
     swend
   methodend
   rem /**
-  rem  * Start listing to javascript events coming form the client
-  rem  */
-  method protected void startEventsProcessing()
-    if(#EventProcessingStarted! = 1) methodret
-    #getHTMLView().setCallback(BBjAPI.ON_NATIVE_JAVASCRIPT,#this!,"handleToastEvent")
-    #EventProcessingStarted! = 1
-  methodend
-  rem /**
   rem  * Handle the toast client events.
   rem  *
   rem  * <b>IMPORTANT</b> This method is not meant to be part of the public API of the control
@@ -419,7 +445,7 @@ class public BBjToast
   rem  *
   rem  * @ignore
   rem  */
-  method public void handleToastEvent(BBjNativeJavaScriptEvent ev!)
+  method public void handleJavascriptEvents(BBjNativeJavaScriptEvent ev!)
     map! = ev!.getEventMap()
     type$ = str(map!.get("type"))
     detail$ = str(map!.get("detail"))
