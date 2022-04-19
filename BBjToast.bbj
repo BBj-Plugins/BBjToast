@@ -268,9 +268,9 @@ class public BBjToast
 :    " try{toast.classList.add(...'" + str(#getCssClass()) + "'.split(',').map(x => x.trim()));}catch(e){}" +
 :    " toast.setAttribute('placement','" + str(#getPlacementAttribute()) + "');"+
 :    " toast.setAttribute('theme','" + str(#getThemeAttribute()) + "');"+
-:    " toast.message='" + str(#getMessage()) + "';"+
+:    " toast.message=`" + str(#getMessage()) + "`;"+
 :    " toast.duration=" + str(#getDuration()) + ";"+
-:    " toast.innerHTML='" + str(buttons!) + "';"+
+:    " toast.innerHTML=`" + str(buttons!) + "`;"+
 :    " await toast.open()"+
 :    "})()"
     #getHTMLView().executeAsyncScript(script!)
