@@ -198,7 +198,7 @@ To prevent the toast from closing automatically use a negative number.
 use ::BBjToast/BBjToast.bbj::BBjToast
 
 wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,130,50,"BBjToast")
-wnd!.setCallback(BBjAPI.ON_CLOSE,"onExist")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"eoj")
 
 open! = wnd!.addButton(205,10,10,110,30,"open")
 open!.setCallback(open!.ON_BUTTON_PUSH,"open")
@@ -242,7 +242,7 @@ You can listen to the toast's `opened` and `closed` events by setting a callback
 use ::BBjToast/BBjToast.bbj::BBjToast
 
 wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,130,50,"BBjToast")
-wnd!.setCallback(BBjAPI.ON_CLOSE,"onExist")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"eoj")
 
 open! = wnd!.addButton(205,10,10,110,30,"open")
 open!.setCallback(open!.ON_BUTTON_PUSH,"open")
@@ -306,7 +306,7 @@ Every button has two properties. The name of the button `HashMap key` and the cu
 use ::BBjToast/BBjToast.bbj::BBjToast
 
 wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,130,50,"BBjToast")
-wnd!.setCallback(BBjAPI.ON_CLOSE,"onExist")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"eoj")
 
 open! = wnd!.addButton(205,10,10,110,30,"Update")
 open!.setCallback(open!.ON_BUTTON_PUSH,"open")
@@ -360,7 +360,7 @@ toast.
 use ::BBjToast/BBjToast.bbj::BBjToast
 
 wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,130,50,"BBjToast")
-wnd!.setCallback(BBjAPI.ON_CLOSE,"onExist")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"eoj")
 
 open! = wnd!.addButton(205,10,10,110,30,"Closable Toast")
 open!.setCallback(open!.ON_BUTTON_PUSH,"open")
@@ -524,7 +524,7 @@ It is also really easy to create new custom themes
 use ::BBjToast/BBjToast.bbj::BBjToast
 
 wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,130,50,"BBjToast")
-wnd!.setCallback(BBjAPI.ON_CLOSE,"onExist")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"eoj")
 wnd!.setAttribute("@app-style-bottom", "" +
 : ".toast-custom-theme { "+
 : " --bbj-toast-background: linear-gradient(to right, hsl(203, 100%, 48%), hsl(1, 89%, 51%));"+
