@@ -344,7 +344,7 @@ toast.
       <bbj-icon name="x"></bbj-icon>
     </button>
   </bbj-toast>
-  <bbj-button style="width: 160px">Closable Toast</bbj-button>
+  <bbj-button style="width: 160px">Closeable Toast</bbj-button>
 </div>
 
 <script>
@@ -362,7 +362,7 @@ use ::BBjToast/BBjToast.bbj::BBjToast
 wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,130,50,"BBjToast")
 wnd!.setCallback(BBjAPI.ON_CLOSE,"eoj")
 
-open! = wnd!.addButton(205,10,10,110,30,"Closable Toast")
+open! = wnd!.addButton(205,10,10,110,30,"Closeable Toast")
 open!.setCallback(open!.ON_BUTTON_PUSH,"open")
 
 toast! = new BBjToast(wnd!)
