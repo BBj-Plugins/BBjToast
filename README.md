@@ -1,7 +1,7 @@
 # BBjToast Widget
 
 <p>
-  <a href="http://www.basis.com/downloads">
+  <a href="http://www.basis.cloud/downloads">
     <img src="https://img.shields.io/badge/BBj-v21.14-blue" alt="BBj v21.14" />
   </a>
   <a href="https://github.com/BBj-Plugins/BBjToast/blob/master/README.md">
