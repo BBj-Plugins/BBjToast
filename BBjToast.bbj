@@ -92,6 +92,10 @@ class public BBjToast
   rem  */
   field public static BBjNumber THEME_INFO = 64
   rem /**
+  rem  * A constant which refers to the toast `gray` theme.
+  rem  */
+  field public static BBjNumber THEME_GRAY = 128  
+  rem /**
   rem  * A constant which refers to the toast `opened` event.
   rem  */
   field public static BBjNumber ON_OPENED = 2
@@ -433,6 +437,8 @@ class public BBjToast
         methodret "danger"
       case BBjToast.THEME_INFO
         methodret "info"
+      case BBjToast.THEME_GRAY
+          methodret "gray"          
       case default
         methodret "default"
     swend
