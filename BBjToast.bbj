@@ -68,6 +68,10 @@ class public BBjToast
   rem  */
   field public static BBjNumber PLACEMENT_BOTTOM_RIGHT = 64
   rem /**
+  rem  * A constant which refers to the toast `center` position.
+  rem  */
+  field public static BBjNumber PLACEMENT_CENTER = 128
+  rem /**
   rem  * A constant which refers to the toast `default` theme.
   rem  */
   field public static BBjNumber THEME_DEFAULT = 2
@@ -94,7 +98,7 @@ class public BBjToast
   rem /**
   rem  * A constant which refers to the toast `gray` theme.
   rem  */
-  field public static BBjNumber THEME_GRAY = 128  
+  field public static BBjNumber THEME_GRAY = 128
   rem /**
   rem  * A constant which refers to the toast `opened` event.
   rem  */
@@ -205,7 +209,7 @@ class public BBjToast
   rem  */
   method public BBjString getCssClass()
     methodret #CssClass!
-  methodend       
+  methodend
   rem /**
   rem  * Open the toast.
   rem  *
@@ -412,6 +416,8 @@ class public BBjToast
         methodret "top"
       case BBjToast.PLACEMENT_TOP_RIGHT
         methodret "top-right"
+      case BBjToast.PLACEMENT_CENTER
+        methodret "center"
       case BBjToast.PLACEMENT_BOTTOM_LEFT
         methodret "bottom-left"
       case BBjToast.PLACEMENT_BOTTOM_RIGHT
@@ -438,7 +444,7 @@ class public BBjToast
       case BBjToast.THEME_INFO
         methodret "info"
       case BBjToast.THEME_GRAY
-          methodret "gray"          
+        methodret "gray"
       case default
         methodret "default"
     swend

@@ -2,7 +2,7 @@
 
 <p>
   <a href="http://www.basis.cloud/downloads">
-    <img src="https://img.shields.io/badge/BBj-v21.14-blue" alt="BBj v21.14" />
+    <img src="https://img.shields.io/badge/BBj-v22.14-blue" alt="BBj v22.14" />
   </a>
   <a href="https://github.com/BBj-Plugins/BBjToast/blob/master/README.md">
     <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="BBjToast is released under the MIT license." />
