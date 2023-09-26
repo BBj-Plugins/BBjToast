@@ -1,478 +1,444 @@
-use java.util.HashMap
-use java.util.ArrayList
-rem /**
-rem  * BBjToastEvent
-rem  *
-rem  * @author Hyyan Abo Fakher
-rem  */
-class public BBjToastEvent
+USE java.util.HashMap
+USE java.util.ArrayList
+REM /**
+REM  * An event which is fired when the toast is opened or closed.
+REM  *
+REM  * @author Hyyan Abo Fakher
+REM  */
+CLASS public BBjToastEvent
 
-  field protected BBjToast Toast!
+  FIELD private BBjToast Toast!
+  rem /** Disable the default constructor */
+  METHOD private BBjToastEvent()
+  METHODEND
   rem /**
   rem  * Construct a new BBjToastEvent
   rem  *
   rem  * @param toast! The instance of the BBjToast object
   rem  */
-  method public BBjToastEvent(BBjToast toast!)
+  METHOD public BBjToastEvent(BBjToast toast!)
     #Toast! = toast!
-  methodend
+  METHODEND
   rem /**
-  rem  * Get the toast instance
-  rem  *
-  rem  * @return BBjToast
+  rem  * {@inheritDoc}
   rem  */
-  method public BBjToast getToast()
-    methodret #Toast!
-  methodend
-  rem /**
-  rem  * Alias for `BBjToastEvent.getToast()`
-  rem  *
-  rem  * @return BBjToast
-  rem  */
-  method public BBjToast getControl()
-    methodret #getToast()
-  methodend
+  METHOD public BBjToast getToast()
+    METHODRET #Toast!
+  METHODEND
+  REM /**
+  REM  * Alias for `BBjToastEvent.getToast()`
+  REM  *
+  REM  * @return The control instance
+  REM  */
+  METHOD public BBjToast getControl()
+    METHODRET #getToast()
+  METHODEND
 
 classend
-rem /**
-rem  * BBjToast
-rem  *
-rem  * A Toast is a subtle notification commonly used in modern applications.
-rem  * It can be used to provide feedback about an operation or to display a system message.
-rem  *
-rem  * @author Hyyan Abo Fakher
-rem  */
-class public BBjToast
-  rem /**
-  rem  * A constant which refers to the toast `top-left` position.
-  rem  */
-  field public static BBjNumber PLACEMENT_TOP_LEFT = 2
-  rem /**
-  rem  * A constant which refers to the toast `top` position.
-  rem  */
-  field public static BBjNumber PLACEMENT_TOP = 4
-  rem /**
-  rem  * A constant which refers to the toast `top-right` position.
-  rem  */
-  field public static BBjNumber PLACEMENT_TOP_RIGHT = 8
-  rem /**
-  rem  * A constant which refers to the toast `bottom-left` position.
-  rem  */
-  field public static BBjNumber PLACEMENT_BOTTOM_LEFT = 16
-  rem /**
-  rem  * A constant which refers to the toast `bottom` position.
-  rem  */
-  field public static BBjNumber PLACEMENT_BOTTOM = 32
-  rem /**
-  rem  * A constant which refers to the toast `bottom-right` position.
-  rem  */
-  field public static BBjNumber PLACEMENT_BOTTOM_RIGHT = 64
-  rem /**
-  rem  * A constant which refers to the toast `center` position.
-  rem  */
-  field public static BBjNumber PLACEMENT_CENTER = 128
-  rem /**
-  rem  * A constant which refers to the toast `default` theme.
-  rem  */
-  field public static BBjNumber THEME_DEFAULT = 2
-  rem /**
-  rem  * A constant which refers to the toast `primary` theme.
-  rem  */
-  field public static BBjNumber THEME_PRIMARY = 4
-  rem /**
-  rem  * A constant which refers to the toast `success` theme.
-  rem  */
-  field public static BBjNumber THEME_SUCCESS = 8
-  rem /**
-  rem  * A constant which refers to the toast `warning` theme.
-  rem  */
-  field public static BBjNumber THEME_WARNING = 16
-  rem /**
-  rem  * A constant which refers to the toast `danger` theme.
-  rem  */
-  field public static BBjNumber THEME_DANGER = 32
-  rem /**
-  rem  * A constant which refers to the toast `info` theme.
-  rem  */
-  field public static BBjNumber THEME_INFO = 64
-  rem /**
-  rem  * A constant which refers to the toast `gray` theme.
-  rem  */
-  field public static BBjNumber THEME_GRAY = 128
-  rem /**
-  rem  * A constant which refers to the toast `opened` event.
-  rem  */
-  field public static BBjNumber ON_OPENED = 2
-  rem /**
-  rem  * A constant which refers to the toast `closed` event.
-  rem  */
-  field public static BBjNumber ON_CLOSED = 4
-  rem /**
-  rem  * A constant which refers to the close button's action.
-  rem  */
-  field public static BBjNumber ACTION_CLOSE = 2
-  rem /**
-  rem  * The duration in milliseconds to show the toast.
-  rem  * After that this time is elapsed , the toast will be hidden automatically.
-  rem  * If the duration number is negative the toast will never close automatically
-  rem  */
-  field public BBjNumber Duration! = 3000
-  rem /**
-  rem  * The toast's placement.
-  rem  */
-  field public BBjNumber Placement! = BBjToast.PLACEMENT_BOTTOM
-  rem /**
-  rem  * The toast's theme.
-  rem  */
-  field public BBjNumber Theme! = BBjToast.THEME_DEFAULT
-  rem /**
-  rem  * The toast's message. HTML is supported in the message
-  rem  */
-  field public BBjString Message! = ""
-  rem /**
-  rem  * When true , then the toast will have the "close" button added
-  rem  */
-  field public BBjNumber Closeable! = 0
-  rem /**
-  rem  * The toast's buttons.
-  rem  */
-  field public HashMap Buttons! = new HashMap()
-  field protected BBjChildWindow Canvas!
-  field protected BBjHtmlView HTMLView!
-  field protected BBjString UUID! = java.util.UUID.randomUUID().toString()
-  field protected BBjString CssClass! = ""
-  rem /**
-  rem  * Construct new BBjToast for the given BBjTopLevelWindow instance
-  rem  *
-  rem  * @param wnd! The window instance
-  rem  * @param id! The id of the created child window
-  rem  */
-  method public BBjToast(BBjWindow wnd!, BBjNumber id!, BBjString cssClass!)
-    #CssClass! = cssClass!
-    #Canvas! = wnd!.addChildWindow(id!, 0, 0, 0, 0, "", $00008010$, BBjAPI().getSysGui().getAvailableContext())
-    rem force components to load
-    #Canvas!.addButton(32765,0,0,0,0,"",$0010$)
-    #HTMLView! = #Canvas!.addHtmlView(101, 0, 0, 0, 0, "", $0000$)
-    #HTMLView!.setOpaque(0)
-    #HTMLView!.setNoEdge(1)
-    #HTMLView!.setTabTraversable(0)
-    #HTMLView!.setFocusable(0)
-    #HTMLView!.setAttribute("data-hv", #UUID!)
-    #HTMLView!.setCallback(BBjAPI.ON_NATIVE_JAVASCRIPT, #this!, "handleJavascriptEvents")
-  methodend
-  rem /**
-  rem  * Construct new BBjToast for the given BBjTopLevelWindow instance
-  rem  *
-  rem  * @param wnd! The window instance
-  rem  * @param id! The id of the created child window
-  rem  */
-  method public BBjToast(BBjWindow wnd!, BBjNumber id!)
-    #this!(wnd!, id!, "")
-  methodend
-  rem /**
-  rem  * Construct new BBjToast for the given BBjTopLevelWindow instance
-  rem  *
-  rem  * @param wnd! The window instance
-  rem  * @param cssClass! A css class selector to add to the toast client-side component
-  rem  */
-  method public BBjToast(BBjWindow wnd!, BBjString cssClass!)
-    #this!(wnd!, wnd!.getAvailableControlID(), cssClass!)
-  methodend
-  rem /**
-  rem  * Construct new BBjToast for the given BBjTopLevelWindow instance
-  rem  *
-  rem  * @param wnd! The window instance
-  rem  */
-  method public BBjToast(BBjWindow wnd!)
-    #this!(wnd!, wnd!.getAvailableControlID(), "")
-  methodend
-  rem /**
-  rem  * Get the unique auto generated id of the toast.
-  rem  *
-  rem  * @return BBjString
-  rem  */
-  method public BBjString getUUID()
-    methodret #UUID!
-  methodend
-  rem /**
-  rem  * Get the canvas's id
-  rem  *
-  rem  * @return BBjNumber
-  rem  */
-  method public BBjNumber getID()
-    methodret #getCanvas().getID()
-  methodend
-  rem /**
-  rem  * Get the css class of the component
-  rem  *
-  rem  * @return BBjString
-  rem  */
-  method public BBjString getCssClass()
-    methodret #CssClass!
-  methodend
-  rem /**
-  rem  * Open the toast.
-  rem  *
-  rem  * @param message! The toast's message to show
-  rem  * @param duration! The toast's duration
-  rem  *
-  rem  * @return BBjToast
-  rem */
-  method public BBjToast open(BBjString message!, BBjNumber duration!)
-    id! = str(#getUUID())
+REM /**
+REM  * BBjToast
+REM  *
+REM  * A Toast is a subtle notification commonly used in modern applications.
+REM  * It can be used to provide feedback about an operation OR to display a system message.
+REM  *
+REM  * @author Hyyan Abo Fakher
+REM  */
+CLASS public BBjToast
+  REM /**
+  REM  * A constant which refers to the toast `top-left` position.
+  REM  */
+  FIELD public static BBjNumber PLACEMENT_TOP_LEFT = 2
+  REM /**
+  REM  * A constant which refers to the toast `top` position.
+  REM  */
+  FIELD public static BBjNumber PLACEMENT_TOP = 4
+  REM /**
+  REM  * A constant which refers to the toast `top-right` position.
+  REM  */
+  FIELD public static BBjNumber PLACEMENT_TOP_RIGHT = 8
+  REM /**
+  REM  * A constant which refers to the toast `bottom-left` position.
+  REM  */
+  FIELD public static BBjNumber PLACEMENT_BOTTOM_LEFT = 16
+  REM /**
+  REM  * A constant which refers to the toast `bottom` position.
+  REM  */
+  FIELD public static BBjNumber PLACEMENT_BOTTOM = 32
+  REM /**
+  REM  * A constant which refers to the toast `bottom-right` position.
+  REM  */
+  FIELD public static BBjNumber PLACEMENT_BOTTOM_RIGHT = 64
+  REM /**
+  REM  * A constant which refers to the toast `center` position.
+  REM  */
+  FIELD public static BBjNumber PLACEMENT_CENTER = 128
+  REM /**
+  REM  * A constant which refers to the toast `default` theme.
+  REM  */
+  FIELD public static BBjNumber THEME_DEFAULT = 2
+  REM /**
+  REM  * A constant which refers to the toast `primary` theme.
+  REM  */
+  FIELD public static BBjNumber THEME_PRIMARY = 4
+  REM /**
+  REM  * A constant which refers to the toast `success` theme.
+  REM  */
+  FIELD public static BBjNumber THEME_SUCCESS = 8
+  REM /**
+  REM  * A constant which refers to the toast `warning` theme.
+  REM  */
+  FIELD public static BBjNumber THEME_WARNING = 16
+  REM /**
+  REM  * A constant which refers to the toast `danger` theme.
+  REM  */
+  FIELD public static BBjNumber THEME_DANGER = 32
+  REM /**
+  REM  * A constant which refers to the toast `info` theme.
+  REM  */
+  FIELD public static BBjNumber THEME_INFO = 64
+  REM /**
+  REM  * A constant which refers to the toast `gray` theme.
+  REM  */
+  FIELD public static BBjNumber THEME_GRAY = 128
+  REM /**
+  REM  * A constant which refers to the toast `opened` event.
+  REM  */
+  FIELD public static BBjNumber ON_OPENED = 2
+  REM /**
+  REM  * A constant which refers to the toast `closed` event.
+  REM  */
+  FIELD public static BBjNumber ON_CLOSED = 4
+  REM /**
+  REM  * A constant which refers to the CLOSE button's action.
+  REM  */
+  FIELD public static BBjNumber ACTION_CLOSE = 2
+  REM /**
+  REM  * The duration in milliseconds to show the toast.
+  REM  * After that this time is elapsed , the toast will be hidden automatically.
+  REM  * IF the duration number is negative the toast will never CLOSE automatically
+  REM  */
+  FIELD public BBjNumber Duration! = 3000
+  REM /**
+  REM  * The toast's placement.
+  REM  */
+  FIELD public BBjNumber Placement! = BBjToast.PLACEMENT_BOTTOM
+  REM /**
+  REM  * The toast's theme.
+  REM  */
+  FIELD public BBjNumber Theme! = BBjToast.THEME_DEFAULT
+  REM /**
+  REM  * The toast's message. HTML is supported in the message
+  REM  */
+  FIELD public BBjString Message! = ""
+  REM /**
+  REM  * When true , THEN the toast will have the "close" button added
+  REM  */
+  FIELD public BBjNumber Closeable! = 0
+  REM /**
+  REM  * The toast's buttons.
+  REM  */
+  FIELD public HashMap Buttons! = new HashMap()
+  FIELD private BBjWebComponent WebComponent!
+  REM /**
+  REM  * Construct new BBjToast.
+  REM  *
+  REM  * @param wnd! The window instance
+  REM  */
+  METHOD public BBjToast(BBjWindow wnd!)
+    #WebComponent! = wnd!.addWebComponent("bbj-toast")
+    #WebComponent!.executeAsyncScript("document.body.appendChild(component);")
+    #WebComponent!.setStyle("width","")
+    #WebComponent!.setStyle("height","")
+    #WebComponent!.setStyle("position","")
+    #WebComponent!.setTabTraversable(0)
+    #WebComponent!.setFocusable(0)
+    handler! = new BBjToastEventHandler(#this!)
+
+
+    DECLARE AUTO BBjWebEventOptions toggleOptions!
+
+    toggleOptions! = #WebComponent!.newEventOptions()
+    toggleOptions!.setFilter("event.target.isSameNode(component)")
+    #WebComponent!.setCallback("bbj-opened", handler!, "handleClientEvents", toggleOptions!)
+    #WebComponent!.setCallback("bbj-closed", handler!, "handleClientEvents", toggleOptions!)
+
+    DECLARE AUTO BBjWebEventOptions clickOptions!
+
+    clickOptions! = #WebComponent!.newEventOptions()
+    code! = "" +
+:    "const target = event.target.closest('[data-action]');" +
+:    "if (target) {" +
+:    "  const action = target.getAttribute('data-action');" +
+:    "  if (action === 'close') {" +
+:    "    component.close();" +
+:    "  } else {" +
+:    "    const event = new CustomEvent('bbj-toast-button-event', {" +
+:    "      bubbles: true," +
+:    "      detail: action" +
+:    "    });" +
+:    "    component.dispatchEvent(event);" +
+:    "  }" +
+:    "}"
+    clickOptions!.setCode(code!)
+    #WebComponent!.setCallback("click", handler!, "handleClientEvents", clickOptions!)
+
+    DECLARE AUTO BBjWebEventOptions toastButtonOptions!
+
+    toastButtonOptions! = #WebComponent!.newEventOptions()
+    toastButtonOptions!.addItem("name", "event.detail")
+    #WebComponent!.setCallback("bbj-toast-button-event", handler!, "handleClientEvents", toastButtonOptions!)
+  METHODEND
+  REM /**
+  REM  * Set the toast's placement.
+  REM  *
+  REM  * @param placement! The toast's placement
+  REM  */
+  METHOD public void setPlacement(BBjNumber placement!)
+    #Placement! = placement!
+    property! = null()
+    SWITCH #Placement!
+      CASE BBjToast.PLACEMENT_TOP_LEFT
+        property! = "top-left"
+        break
+      CASE BBjToast.PLACEMENT_TOP
+        property! = "top"
+        break
+      CASE BBjToast.PLACEMENT_TOP_RIGHT
+        property! = "top-right"
+        break
+      CASE BBjToast.PLACEMENT_CENTER
+        property! = "center"
+        break
+      CASE BBjToast.PLACEMENT_BOTTOM_LEFT
+        property! = "bottom-left"
+        break
+      CASE BBjToast.PLACEMENT_BOTTOM_RIGHT
+        property! = "bottom-right"
+        break
+      CASE default
+        property! = "bottom"
+        break
+    SWEND
+
+    #getWebComponent().putClientProperty("placement", property!)
+  METHODEND
+  REM /**
+  REM  * Set the toast's theme.
+  REM  *
+  REM  * @param theme! The toast's theme
+  REM  */
+  METHOD public void setTheme(BBjNumber theme!)
+    #Theme! = theme!
+    property! = null()
+    SWITCH #Theme!
+      CASE BBjToast.THEME_PRIMARY
+        property! = "primary"
+        break
+      CASE BBjToast.THEME_SUCCESS
+        property! = "success"
+        break
+      CASE BBjToast.THEME_WARNING
+        property! = "warning"
+        break
+      CASE BBjToast.THEME_DANGER
+        property! = "danger"
+        break
+      CASE BBjToast.THEME_INFO
+        property! = "info"
+        break
+      CASE BBjToast.THEME_GRAY
+        property! = "gray"
+        break
+      CASE default
+        property! = "default"
+        break
+    SWEND
+
+    #getWebComponent().putClientProperty("theme", property!)
+  METHODEND
+  REM /**
+  REM  * Open the toast.
+  REM  *
+  REM  * @param message! The toast's message to show
+  REM  * @param duration! The toast's duration
+  REM */
+  METHOD public void open(BBjString message!, BBjNumber duration!)
     buttons! = ""
     it! = #getButtons().entrySet().iterator()
-    while it!.hasNext()
+    WHILE it!.hasNext()
       next! = it!.next()
       label! = str(next!.getKey())
       action! = str(next!.getValue())
 
-      if(action! = str(BBjToast.ACTION_CLOSE))
+      IF(action! = str(BBjToast.ACTION_CLOSE))
         action! = "close"
-      fi
+      FI
 
       buttons! = buttons! + "<button data-action=""" + action!+""">" + label! + "</button>"
-    wend
+    WEND
 
-    if(#getCloseable() = 1)
+    IF(#getCloseable() = 1)
       buttons! = buttons! + "<button data-action=""close""><bbj-icon name=""x""></bbj-icon></button>"
-    fi
+    FI
 
     #setMessage(message!)
     #setDuration(duration!)
-    script! = "" +
-:    "(async () => {" +
-:    " await customElements.whenDefined('bbj-toast');" +
-:    " await customElements.whenDefined('bbj-icon');" +
-:    " const container = document.querySelector('[data-hv=""" + id! + """]');" +
-:    " let toast = document.querySelector('[data-toast=""" + id! + """]');" +
-:    " if(!toast){" +
-:    "  toast = document.createElement('bbj-toast');" +
-:    "  toast.addEventListener('bbj-opened', ev => {"+
-:    "     if(!container || !container.basisDispatchCustomEvent) return;" +
-:    "     if(!ev.target.isSameNode(toast)) return;" +
-:    "     container.basisDispatchCustomEvent(container, {type:'bbj-opened', detail: ''});" +
-:    "  });"+
-:    "  toast.addEventListener('bbj-closed', ev => {"+
-:    "     if(!container ||  !container.basisDispatchCustomEvent) return;" +
-:    "     if(!ev.target.isSameNode(toast)) return;" +
-:    "     container.basisDispatchCustomEvent(container, {type:'bbj-closed', detail: ''});" +
-:    "  });"+
-:    "  toast.addEventListener('click', ev => {"+
-:    "     if(!container || !container.basisDispatchCustomEvent) return;" +
-:    "     const target = ev.target.closest('[data-action]');" +
-:    "     if(!target) return;" +
-:    "     const action = target.getAttribute('data-action');" +
-:    "     if(action === 'close') {" +
-:    "        toast.close();" +
-:    "        return;" +
-:    "     }" +
-:    "     container.basisDispatchCustomEvent(container, {type:action, detail: ''});" +
-:    "  });"+
-:    "  toast.setAttribute('data-toast','" + #getUUID() + "');" +
-:    "  document.body.appendChild(toast);" +
-:    " }" +
-:    " if(toast.opened) await toast.close();" +
-:    " try{toast.classList.add(...'" + str(#getCssClass()) + "'.split(',').map(x => x.trim()));}catch(e){}" +
-:    " toast.setAttribute('placement','" + str(#getPlacementAttribute()) + "');"+
-:    " toast.setAttribute('theme','" + str(#getThemeAttribute()) + "');"+
-:    " toast.message=`" + str(#getMessage()) + "`;"+
-:    " toast.duration=" + str(#getDuration()) + ";"+
-:    " toast.innerHTML=`" + str(buttons!) + "`;"+
-:    " await toast.open()"+
-:    "})()"
-    #getHTMLView().executeAsyncScript(script!)
-    methodret #this!
-  methodend
-  rem /**
-  rem  * Open the toast.
-  rem  *
-  rem  * If the toast is already opened then changes to the
-  rem  * toast's placement , theme , duration and message will be ignored.
-  rem  *
-  rem  * @param message! The toast's message to show
-  rem  *
-  rem  * @return BBjToast
-  rem */
-  method public BBjToast open(BBjString message!)
-    methodret #open(message!, #getDuration())
-  methodend
-  rem /**
-  rem  * Open the toast.
-  rem  *
-  rem  * If the toast is already opened then changes to the
-  rem  * toast's placement , theme , duration and message will be ignored.
-  rem  *
-  rem  * @return BBjToast
-  rem */
-  method public BBjToast open()
-    methodret #open(#getMessage(), #getDuration())
-  methodend
-  rem /**
-  rem  * Close the toast message.
-  rem  *
-  rem  * @return BBjToast
-  rem */
-  method public BBjToast close()
-    script! = "" +
-:    "(() => {" +
-:    " const toast = document.querySelector('[data-toast=""" + #getUUID() + """]');" +
-:    " if(toast) toast.opened = false;" +
-:    "})()"
-    #getHTMLView().executeAsyncScript(script!)
-    methodret #this!
-  methodend
-  rem /**
-  rem  * Set a widget attribute
-  rem  *
-  rem  * @param key! The attribute's name
-  rem  * @param value! The attribute's value
-  rem  */
-  method public void setAttribute(BBjString key!, BBjString value!)
-    script! = "" +
-:    "(() => {" +
-:    " const toast = document.querySelector('[data-toast=""" + #getUUID() + """]');" +
-:    " toast.setAttribute('" + str(key!) + "','" + str(value!) + "');" +
-:    "})()"
-    #getHTMLView().executeAsyncScript(script!)
-  methodend
-  rem /**
-  rem  * Get a widget attribute
-  rem  *
-  rem  * @param key! The attribute's name
-  rem  */
-  method public BBjString getAttribute(BBjString key!)
-    script! = "" +
-:    "(() => {" +
-:    " const toast = document.querySelector('[data-toast=""" + #getUUID() + """]');" +
-:    " return toast.getAttribute('" + str(key!) + "');" +
-:    "})()"
-    methodret str(#getHTMLView().executeScript(script!))
-  methodend
-  rem /**
-  rem  * Set a toast event listener
-  rem  *
-  rem  * @param event! The toast event
-  rem  * @param callback! The event callback
-  rem  */
-  method public void setCallback(BBjString event!, String callback!)
-    BBjAPI().setCustomEventCallback(str(#this!) + str(event!), callback!)
-  methodend
-  rem /**
-  rem  * Set a toast event listener
-  rem  *
-  rem  * @param event! The toast event
-  rem  * @param callback! A class instance
-  rem  * @param callback! The event method
-  rem  */
-  method public void setCallback(BBjString event!, CustomObject instance!, String method!)
-    BBjAPI().setCustomEventCallback(str(#this!) + str(event!), instance!, method!)
-  methodend
-  rem /**
-  rem  * Set a toast event listener
-  rem  *
-  rem  * @param event! The toast event
-  rem  * @param callback! The event callback
-  rem  */
-  method public void setCallback(BBjNumber event!, String callback!)
-    #setCallback(str(event!), callback!)
-  methodend
-  rem /**
-  rem  * Set a toast event listener
-  rem  *
-  rem  * @param event! The toast event
-  rem  * @param callback! A class instance
-  rem  * @param callback! The event method
-  rem  */
-  method public void setCallback(BBjNumber event!, CustomObject instance!, String method!)
-    #setCallback(str(event!), instance!, callback!)
-  methodend
-  rem /**
-  rem  * Clear an event callback
-  rem  *
-  rem  * @param event! The toast event
-  rem  */
-  method public void clearCustomEventCallback(BBjString event!)
-    BBjAPI().clearCustomEventCallback(str(#this!) + str(event!))
-  methodend
-  rem /**
-  rem  * Clear an event callback
-  rem  *
-  rem  * @param event! The toast event
-  rem  */
-  method public void clearCustomEventCallback(BBjNumber event!)
-    #clearCustomEventCallback(str(event!))
-  methodend
-  rem /**
-  rem  * Resolve the placement constant as an string attribute
-  rem  *
-  rem  * @return BBjString The placement attribute
-  rem  */
-  method protected BBjString getPlacementAttribute()
-    switch #Placement!
-      case BBjToast.PLACEMENT_TOP_LEFT
-        methodret "top-left"
-      case BBjToast.PLACEMENT_TOP
-        methodret "top"
-      case BBjToast.PLACEMENT_TOP_RIGHT
-        methodret "top-right"
-      case BBjToast.PLACEMENT_CENTER
-        methodret "center"
-      case BBjToast.PLACEMENT_BOTTOM_LEFT
-        methodret "bottom-left"
-      case BBjToast.PLACEMENT_BOTTOM_RIGHT
-        methodret "bottom-right"
-      case default
-        methodret "bottom"
-    swend
-  methodend
-  rem /**
-  rem  * Resolve the theme constant as a string attribute
-  rem  *
-  rem  * @return BBjString The theme attribute
-  rem  */
-  method protected BBjString getThemeAttribute()
-    switch #Theme!
-      case BBjToast.THEME_PRIMARY
-        methodret "primary"
-      case BBjToast.THEME_SUCCESS
-        methodret "success"
-      case BBjToast.THEME_WARNING
-        methodret "warning"
-      case BBjToast.THEME_DANGER
-        methodret "danger"
-      case BBjToast.THEME_INFO
-        methodret "info"
-      case BBjToast.THEME_GRAY
-        methodret "gray"
-      case default
-        methodret "default"
-    swend
-  methodend
-  rem /**
-  rem  * Handle the toast client events.
-  rem  *
-  rem  * <b>IMPORTANT</b> This method is not meant to be part of the public API of the control
-  rem  * @param ev! The Javascript event
-  rem  *
-  rem  * @ignore
-  rem  */
-  method public void handleJavascriptEvents(BBjNativeJavaScriptEvent ev!)
-    map! = ev!.getEventMap()
-    type$ = str(map!.get("type"))
-    detail$ = str(map!.get("detail"))
-    payload! = new BBjToastEvent(#this!)
-    switch type$
-      case "bbj-opened"
-        BBjAPI().postPriorityCustomEvent(str(#this!)+ str(BBjToast.ON_OPENED), payload!)
-        break
-      case "bbj-closed"
-        BBjAPI().postPriorityCustomEvent(str(#this!)+str(BBjToast.ON_CLOSED), payload!)
-        break
-      case default
-        BBjAPI().postPriorityCustomEvent(str(#this!) + type$, payload!)
-        break
-    swend
-  methodend
 
-classend
+    DECLARE AUTO BBjWebComponent toast!
+
+    toast! = #getWebComponent()
+    toast!.setHtml(buttons!)
+    toast!.putClientProperty("message", #getMessage())
+    toast!.putClientProperty("duration", #getDuration())
+    toast!.putClientProperty("opened", BBjAPI.TRUE)
+  METHODEND
+  REM /**
+  REM  * Open the toast.
+  REM  *
+  REM  * @param message! The toast's message to show
+  REM */
+  METHOD public void open(BBjString message!)
+    #open(message!, #getDuration())
+  METHODEND
+  REM /**
+  REM  * Open the toast.
+  REM */
+  METHOD public void open()
+    #open(#getMessage(), #getDuration())
+  METHODEND
+  REM /**
+  REM  * Close the toast message.
+  REM  *
+  REM  * @return The control instance
+  REM */
+  METHOD public void close()
+    #getWebComponent().putClientProperty("opened", BBjAPI.FALSE)
+  METHODEND
+  REM /**
+  REM  * Set a widget attribute.
+  REM  *
+  REM  * @param key! The attribute's name
+  REM  * @param value! The attribute's value
+  REM  */
+  METHOD public void setAttribute(BBjString key!, BBjString value!)
+    #getWebComponent().setAttribute(key!, value!)
+  METHODEND
+  REM /**
+  REM  * Get a widget attribute.
+  REM  *
+  REM  * @param key! The attribute's name
+  REM  */
+  METHOD public BBjString getAttribute(BBjString key!)
+    methodret #getWebComponent().getAttribute(key!)
+  METHODEND
+  REM /**
+  REM  * Add a css class to the toast.
+  REM  *
+  REM  * @param class! The css class to add
+  REM  */
+  METHOD public void addClass(BBjString class!)
+    #getWebComponent().addClass(class!)
+  METHODEND
+  REM /**
+  REM  * Remove a css class to the toast.
+  REM  *
+  REM  * @param class! The css class to add
+  REM  */
+  METHOD public void removeClass(BBjString class!)
+    #getWebComponent().removeClass(class!)
+  METHODEND
+  REM /**
+  REM  * Set an event listener.
+  REM  *
+  REM  * @param event! The event
+  REM  * @param callback! The event callback
+  REM  */
+  METHOD public void setCallback(BBjString event!, String callback!)
+    BBjAPI().setCustomEventCallback(str(#this!) + str(event!), callback!)
+  METHODEND
+  REM /**
+  REM  * Set an event listener.
+  REM  *
+  REM  * @param event! The event
+  REM  * @param callback! The event callback
+  REM  */
+  METHOD public void setCallback(BBjNumber event!, String callback!)
+    #setCallback(str(event!), callback!)
+  METHODEND
+  REM /**
+  REM  * Set an event listener.
+  REM  *
+  REM  * @param event! The event
+  REM  * @param callback! A class instance
+  REM  * @param callback! The event method
+  REM  */
+  METHOD public void setCallback(BBjString event!, CustomObject instance!, String method!)
+    BBjAPI().setCustomEventCallback(str(#this!) + str(event!), instance!, method!)
+  METHODEND
+  REM /**
+  REM  * Set an event listener.
+  REM  *
+  REM  * @param event! The event
+  REM  * @param callback! A class instance
+  REM  * @param callback! The event method
+  REM  */
+  METHOD public void setCallback(BBjNumber event!, CustomObject instance!, String method!)
+    #setCallback(str(event!), instance!, method!)
+  METHODEND
+  REM /**
+  REM  * Clear the event callback.
+  REM  *
+  REM  * @param event! The event
+  REM  * @return The control instance
+  REM  */
+  METHOD public void clearCallback(BBjString event!)
+    BBjAPI().clearCustomEventCallback(str(#this!) + str(event!))
+  METHODEND
+  REM /**
+  REM  * Clear the event callback.
+  REM  *
+  REM  * @param event! The event
+  REM  * @return The control instance
+  REM  */
+  METHOD public void clearCallback(BBjNumber event!)
+    #clearCallback(str(event!))
+  METHODEND
+
+CLASSEND
+REM /**
+REM  * A class which is used to handle the toast client events.
+REM  *
+REM  * @author Hyyan Abo Fakher
+REM  */
+CLASS public BBjToastEventHandler
+
+  FIELD private BBjToast Toast!
+
+  METHOD public BBjToastEventHandler(BBjToast toast!)
+    #Toast! = toast!
+  METHODEND
+  REM /**
+  REM  * Handle the toast client events.
+  REM  *
+  REM  * @param ev! The event
+  REM  */
+  METHOD public void handleClientEvents(BBjWebEvent ev!)
+    type$ = ev!.getEventType()
+    map! = ev!.getEventMap()
+    payload! = new BBjToastEvent(#Toast!)
+    SWITCH type$
+      CASE "bbj-opened"
+        BBjAPI().postPriorityCustomEvent(str(#Toast!) + str(BBjToast.ON_OPENED), payload!)
+        break
+      CASE "bbj-closed"
+        BBjAPI().postPriorityCustomEvent(str(#Toast!) + str(BBjToast.ON_CLOSED), payload!)
+        break
+      CASE "bbj-toast-button-event"
+        BBjAPI().postPriorityCustomEvent(str(#Toast!) + map!.get("name"), payload!)
+      CASE DEFAULT
+        BBjAPI().postPriorityCustomEvent(str(#Toast!) + type$, payload!)
+        break
+    SWEND
+  METHODEND
+
+CLASSEND

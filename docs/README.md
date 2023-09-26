@@ -2,7 +2,7 @@
 
 <p>
   <a href="http://www.basis.cloud/downloads">
-    <img src="https://img.shields.io/badge/BBj-v22.14-blue" alt="BBj v22.14" />
+    <img src="https://img.shields.io/badge/BBj-v24.00-blue" alt="BBj v24.00" />
   </a>
   <a href="https://github.com/BBj-Plugins/BBjToast/blob/master/README.md">
     <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="BBjToast is released under the MIT license." />
@@ -524,20 +524,26 @@ It is also really easy to create new custom themes
 ```BBj preview
 use ::BBjToast/BBjToast.bbj::BBjToast
 
+style! = "
+: .toast-custom-theme { 
+:  --bbj-toast-background: linear-gradient(to right, hsl(203, 100%, 48%), hsl(1, 89%, 51%));
+:  --bbj-toast-color: white;
+:  --bbj-toast-button-color: white;
+:  --bbj-toast-border-color: hsl(0, 0%, 73%);
+: }
+:"
+
+web! = BBjAPI().getWebManager()
+web!.injectStyle(style!, 0)
+
 wnd! = BBjAPI().openSysGui("X0").addWindow(10,10,130,50,"BBjToast")
 wnd!.setCallback(BBjAPI.ON_CLOSE,"eoj")
-wnd!.setAttribute("@app-style-bottom", "" +
-: ".toast-custom-theme { "+
-: " --bbj-toast-background: linear-gradient(to right, hsl(203, 100%, 48%), hsl(1, 89%, 51%));"+
-: " --bbj-toast-color: white;"+
-: " --bbj-toast-button-color: white;"+
-: " --bbj-toast-border-color: hsl(0, 0%, 73%);"+
-: "}")
 
 open! = wnd!.addButton(205,10,10,110,30,"Update")
 open!.setCallback(open!.ON_BUTTON_PUSH,"open")
 
-toast! = new BBjToast(wnd!,"toast-custom-theme")
+toast! = new BBjToast(wnd!)
+toast!.addClass("toast-custom-theme")
 toast!.getButtons().put("Later", BBjToast.ACTION_CLOSE)
 toast!.getButtons().put("Update Now", BBjToast.ACTION_CLOSE)
 
