@@ -145,7 +145,7 @@ CLASS public BBjToast
   REM  * @param wnd! The window instance
   REM  */
   METHOD public BBjToast(BBjWindow wnd!)
-    #WebComponent! = wnd!.addWebComponent("bbj-toast")
+    #WebComponent! = wnd!.addWebComponent("dwc-toast")
     #WebComponent!.executeAsyncScript("document.body.appendChild(component);")
     #WebComponent!.setStyle("width","")
     #WebComponent!.setStyle("height","")
@@ -159,8 +159,8 @@ CLASS public BBjToast
 
     toggleOptions! = #WebComponent!.newEventOptions()
     toggleOptions!.setFilter("event.target.isSameNode(component)")
-    #WebComponent!.setCallback("bbj-opened", handler!, "handleClientEvents", toggleOptions!)
-    #WebComponent!.setCallback("bbj-closed", handler!, "handleClientEvents", toggleOptions!)
+    #WebComponent!.setCallback("dwc-opened", handler!, "handleClientEvents", toggleOptions!)
+    #WebComponent!.setCallback("dwc-closed", handler!, "handleClientEvents", toggleOptions!)
 
     DECLARE AUTO BBjWebEventOptions clickOptions!
 
@@ -172,7 +172,7 @@ CLASS public BBjToast
 :    "  if (action === 'close') {" +
 :    "    component.close();" +
 :    "  } else {" +
-:    "    const event = new CustomEvent('bbj-toast-button-event', {" +
+:    "    const event = new CustomEvent('dwc-toast-button-event', {" +
 :    "      bubbles: true," +
 :    "      detail: action" +
 :    "    });" +
@@ -186,7 +186,7 @@ CLASS public BBjToast
 
     toastButtonOptions! = #WebComponent!.newEventOptions()
     toastButtonOptions!.addItem("name", "event.detail")
-    #WebComponent!.setCallback("bbj-toast-button-event", handler!, "handleClientEvents", toastButtonOptions!)
+    #WebComponent!.setCallback("dwc-toast-button-event", handler!, "handleClientEvents", toastButtonOptions!)
   METHODEND
   REM /**
   REM  * Set the toast's placement.
@@ -278,7 +278,7 @@ CLASS public BBjToast
     WEND
 
     IF(#getCloseable() = 1)
-      buttons! = buttons! + "<button data-action=""close""><bbj-icon name=""x""></bbj-icon></button>"
+      buttons! = buttons! + "<button data-action=""close""><dwc-icon name=""x""></dwc-icon></button>"
     FI
 
     #setMessage(message!)
@@ -427,13 +427,13 @@ CLASS public BBjToastEventHandler
     map! = ev!.getEventMap()
     payload! = new BBjToastEvent(#Toast!)
     SWITCH type$
-      CASE "bbj-opened"
+      CASE "dwc-opened"
         BBjAPI().postPriorityCustomEvent(str(#Toast!) + str(BBjToast.ON_OPENED), payload!)
         break
-      CASE "bbj-closed"
+      CASE "dwc-closed"
         BBjAPI().postPriorityCustomEvent(str(#Toast!) + str(BBjToast.ON_CLOSED), payload!)
         break
-      CASE "bbj-toast-button-event"
+      CASE "dwc-toast-button-event"
         BBjAPI().postPriorityCustomEvent(str(#Toast!) + map!.get("name"), payload!)
       CASE DEFAULT
         BBjAPI().postPriorityCustomEvent(str(#Toast!) + type$, payload!)

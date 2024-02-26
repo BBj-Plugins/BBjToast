@@ -10,8 +10,8 @@
   <a href="https://github.com/necolas/issue-guidelines/blob/master/CONTRIBUTING.md#pull-requests">
     <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs welcome!" />
   </a>
-   <a href="https://basishub.github.io/basis-next/#/dwc/bbj-toast">
-    <img src="https://img.shields.io/badge/Component-bbj--toast-%23006aff" alt="Tag Name">
+   <a href="https://basishub.github.io/basis-next/#/dwc/dwc-toast">
+    <img src="https://img.shields.io/badge/Component-dwc--toast-%23006aff" alt="Tag Name">
   </a>
 </p>
 
@@ -76,29 +76,29 @@ Supported placements are:
 
 ```html preview
 <div class="placement-sample">
-  <bbj-toast message="A nice BBjToast widget."></bbj-toast>
+  <dwc-toast message="A nice BBjToast widget."></dwc-toast>
   <div>
-    <bbj-button data-placement="top-left">Top Left</bbj-button>
-    <bbj-button data-placement="top">Top</bbj-button>
-    <bbj-button data-placement="top-right">Top Right</bbj-button>
+    <dwc-button data-placement="top-left">Top Left</dwc-button>
+    <dwc-button data-placement="top">Top</dwc-button>
+    <dwc-button data-placement="top-right">Top Right</dwc-button>
   </div>
   <br />
   <div>
-    <bbj-button data-placement="bottom-left">Bottom Left</bbj-button>
-    <bbj-button data-placement="bottom">Bottom</bbj-button>
-    <bbj-button data-placement="bottom-right">Bottom Right</bbj-button>
+    <dwc-button data-placement="bottom-left">Bottom Left</dwc-button>
+    <dwc-button data-placement="bottom">Bottom</dwc-button>
+    <dwc-button data-placement="bottom-right">Bottom Right</dwc-button>
   </div>
 </div>
 <style>
-  bbj-button {
+  dwc-button {
     width: 120px;
     height: 30px;
   }
 </style>
 
 <script>
-  const toast = document.querySelector(".placement-sample bbj-toast");
-  [...document.querySelectorAll(".placement-sample bbj-button")].forEach(
+  const toast = document.querySelector(".placement-sample dwc-toast");
+  [...document.querySelectorAll(".placement-sample dwc-button")].forEach(
     (x) => {
       x.addEventListener("click", (ev) => {
         const control = ev.target;
@@ -179,16 +179,16 @@ To prevent the toast from closing automatically use a negative number.
 
 ```html preview
 <div class="duration-sample">
-  <bbj-toast
+  <dwc-toast
     message="The toast will close itself after 5s."
     duration="5000"
-  ></bbj-toast>
-  <bbj-button>Open</bbj-button>
+  ></dwc-toast>
+  <dwc-button>Open</dwc-button>
 </div>
 
 <script>
-  const toast = document.querySelector(".duration-sample bbj-toast");
-  const button = document.querySelector(".duration-sample bbj-button");
+  const toast = document.querySelector(".duration-sample dwc-toast");
+  const button = document.querySelector(".duration-sample dwc-button");
   button.addEventListener("click", (ev) => {
     toast.open();
   });
@@ -223,16 +223,16 @@ You can listen to the toast's `opened` and `closed` events by setting a callback
 
 ```html preview
 <div class="events-sample">
-  <bbj-toast message="A nice BBjToast widget."></bbj-toast>
-  <bbj-button>Open</bbj-button>
+  <dwc-toast message="A nice BBjToast widget."></dwc-toast>
+  <dwc-button>Open</dwc-button>
 </div>
 
 <script>
-  const toast = document.querySelector(".events-sample bbj-toast");
-  toast.addEventListener("bbj-opened", (ev) => alert("The toast is opened"));
-  toast.addEventListener("bbj-closed", (ev) => alert("The toast is closed"));
+  const toast = document.querySelector(".events-sample dwc-toast");
+  toast.addEventListener("dwc-opened", (ev) => alert("The toast is opened"));
+  toast.addEventListener("dwc-closed", (ev) => alert("The toast is closed"));
 
-  const button = document.querySelector(".events-sample bbj-button");
+  const button = document.querySelector(".events-sample dwc-button");
   button.addEventListener("click", (ev) => {
     toast.open();
   });
@@ -280,15 +280,15 @@ Every button has two properties. The name of the button `HashMap key` and the cu
 
 ```html preview
 <div class="buttons-sample">
-  <bbj-toast message="The application has new update available" duration="-1">
+  <dwc-toast message="The application has new update available" duration="-1">
     <button data-action="close">Later</button>
     <button data-action="update">Update Now</button>
-  </bbj-toast>
-  <bbj-button>Update</bbj-button>
+  </dwc-toast>
+  <dwc-button>Update</dwc-button>
 </div>
 
 <script>
-  const toast = document.querySelector(".buttons-sample bbj-toast");
+  const toast = document.querySelector(".buttons-sample dwc-toast");
 
   const update = document.querySelector('[data-action="update"');
   update.addEventListener("click", (ev) => {
@@ -296,7 +296,7 @@ Every button has two properties. The name of the button `HashMap key` and the cu
     alert("The application update process will start");
   });
 
-  const open = document.querySelector(".buttons-sample bbj-button");
+  const open = document.querySelector(".buttons-sample dwc-button");
   open.addEventListener("click", (ev) => {
     toast.open();
   });
@@ -340,17 +340,17 @@ toast.
 
 ```html preview
 <div class="closeable-sample">
-  <bbj-toast message="This a toast with a close button" duration="-1">
+  <dwc-toast message="This a toast with a close button" duration="-1">
     <button data-action="close">
-      <bbj-icon name="x"></bbj-icon>
+      <dwc-icon name="x"></dwc-icon>
     </button>
-  </bbj-toast>
-  <bbj-button style="width: 160px">Closeable Toast</bbj-button>
+  </dwc-toast>
+  <dwc-button style="width: 160px">Closeable Toast</dwc-button>
 </div>
 
 <script>
-  const toast = document.querySelector(".closeable-sample bbj-toast");
-  const open = document.querySelector(".closeable-sample bbj-button");
+  const toast = document.querySelector(".closeable-sample dwc-toast");
+  const open = document.querySelector(".closeable-sample dwc-button");
   open.addEventListener("click", (ev) => {
     toast.open();
   });
@@ -396,29 +396,29 @@ Supported themes are :
 
 ```html preview
 <div class="theme-sample">
-  <bbj-toast message="A nice BBjToast widget."></bbj-toast>
+  <dwc-toast message="A nice BBjToast widget."></dwc-toast>
   <div>
-    <bbj-button data-theme="default">Default</bbj-button>
-    <bbj-button data-theme="primary">Primary</bbj-button>
-    <bbj-button data-theme="success">Success</bbj-button>
+    <dwc-button data-theme="default">Default</dwc-button>
+    <dwc-button data-theme="primary">Primary</dwc-button>
+    <dwc-button data-theme="success">Success</dwc-button>
   </div>
   <br />
   <div>
-    <bbj-button data-theme="warning">Warning</bbj-button>
-    <bbj-button data-theme="danger">Danger</bbj-button>
-    <bbj-button data-theme="info">Info</bbj-button>
+    <dwc-button data-theme="warning">Warning</dwc-button>
+    <dwc-button data-theme="danger">Danger</dwc-button>
+    <dwc-button data-theme="info">Info</dwc-button>
   </div>
 </div>
 <style>
-  bbj-button {
+  dwc-button {
     width: 120px;
     height: 30px;
   }
 </style>
 
 <script>
-  const toast = document.querySelector(".theme-sample bbj-toast");
-  [...document.querySelectorAll(".theme-sample bbj-button")].forEach((x) => {
+  const toast = document.querySelector(".theme-sample dwc-toast");
+  [...document.querySelectorAll(".theme-sample dwc-button")].forEach((x) => {
     x.addEventListener("click", (ev) => {
       const control = ev.target;
       toast.theme = control.dataset.theme;
@@ -489,32 +489,32 @@ It is also really easy to create new custom themes
 ```html preview
 <style>
   .toast-custom-theme {
-    --bbj-toast-background: linear-gradient(
+    --dwc-toast-background: linear-gradient(
       to right,
       hsl(203, 100%, 48%),
       hsl(1, 89%, 51%)
     );
-    --bbj-toast-color: white;
-    --bbj-toast-button-color: white;
-    --bbj-toast-border-color: hsl(0, 0%, 73%);
+    --dwc-toast-color: white;
+    --dwc-toast-button-color: white;
+    --dwc-toast-border-color: hsl(0, 0%, 73%);
   }
 
-  bbj-button {
+  dwc-button {
     width: 140px;
   }
 </style>
 
 <div class="custom-theme-sample">
-  <bbj-toast message="The application has new update available" duration="-1" class="toast-custom-theme">
+  <dwc-toast message="The application has new update available" duration="-1" class="toast-custom-theme">
     <button data-action="close">Later</button>
     <button data-action="close">Update Now</button>
-  </bbj-toast>
-  <bbj-button>Custom Theme</bbj-button>
+  </dwc-toast>
+  <dwc-button>Custom Theme</dwc-button>
 </div>
 
 <script>
-  const toast = document.querySelector(".custom-theme-sample bbj-toast");
-  const open = document.querySelector(".custom-theme-sample bbj-button");
+  const toast = document.querySelector(".custom-theme-sample dwc-toast");
+  const open = document.querySelector(".custom-theme-sample dwc-button");
   open.addEventListener("click", (ev) => {
     toast.open();
   });
@@ -526,10 +526,10 @@ use ::BBjToast/BBjToast.bbj::BBjToast
 
 style! = "
 : .toast-custom-theme { 
-:  --bbj-toast-background: linear-gradient(to right, hsl(203, 100%, 48%), hsl(1, 89%, 51%));
-:  --bbj-toast-color: white;
-:  --bbj-toast-button-color: white;
-:  --bbj-toast-border-color: hsl(0, 0%, 73%);
+:  --dwc-toast-background: linear-gradient(to right, hsl(203, 100%, 48%), hsl(1, 89%, 51%));
+:  --dwc-toast-color: white;
+:  --dwc-toast-button-color: white;
+:  --dwc-toast-border-color: hsl(0, 0%, 73%);
 : }
 :"
 
